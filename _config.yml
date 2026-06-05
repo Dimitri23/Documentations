@@ -1,0 +1,11 @@
+theme: jekyll-theme-cayman
+title: Documentation plugins Jeedom - Dimitri23
+description: Documentation officielle des plugins Jeedom développés par Dimitri23
+author: "Dimitri23"
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  parse_block_html: true
+  syntax_highlighter: rouge
