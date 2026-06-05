@@ -167,7 +167,7 @@ Associez les commandes de vos équipements physiques. La sélection affiche le n
 | Filtration ON | Démarre la filtration |
 | Filtration OFF | Arrête la filtration (bypass durée mini) |
 | Forcer filtration | Démarre la filtration pour X minutes — slider 5–480 min |
-| Forcer durée filtration | Définit la durée journalière cible — slider 0–480 min (`0` = retour au mode configuré) |
+| Forcer durée filtration | Modifie la durée journalière en mode **Manuelle** — slider 0–480 min (sans effet si la source est API Flipr ou T°/2) |
 | PAC ON | Démarre la pompe à chaleur |
 | PAC OFF | Arrête la PAC (bypass durée mini) |
 | Forcer PAC | Démarre la PAC pour X minutes — slider 5–480 min |
@@ -179,7 +179,7 @@ Associez les commandes de vos équipements physiques. La sélection affiche le n
 ## Appels API Flipr
 
 | Endpoint | Fréquence | Données |
-|----------|-----------|---------|
+|----------|-----------|--------|
 | `POST /oauth2/token` | 1×/heure max (token en cache 55 min) | Token d'authentification |
 | `GET /modules/{serial}/Survey/Last` | 1×/heure | Température, pH, Chlore, ORP, UV, Conductivité |
 | `GET /modules/{serial}/FiltrationTime/last` | 1×/heure (mode API) | Durée de filtration conseillée |
@@ -198,8 +198,8 @@ Le cron tourne **toutes les 5 minutes** et applique les règles suivantes dans l
 1. Sync états     — lecture des états physiques depuis les modules Zigbee liés
                   — détection des démarrages/arrêts manuels → comptage automatique
 2. Log quotidien  — incrémente le compteur de filtration/PAC du jour (table SQL)
-3. Sécurité       — PAC active sans filtration → démarre la filtration
-4. Expirations    — fin d'un timer forcé → arrêt (bypass durée mini)
+3. Expirations    — fin d'un timer forcé → arrêt (bypass durée mini)
+4. Sécurité       — PAC active sans filtration → démarre la filtration
 5. PAC            — temp. eau < (cible − hystérésis) → démarre la PAC
                   — temp. eau > (cible + hystérésis) → arrête la PAC (si durée mini atteinte)
                   — plage nuit + PAC non autorisée   → arrête la PAC (si durée mini atteinte)
