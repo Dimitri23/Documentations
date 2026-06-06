@@ -7,6 +7,10 @@ pluginId: fliprpilot
 
 # Plugin Flipr Pilot
 
+<p align="center">
+  <img src="fliprpilot_icon.png" alt="Icône FliprPilot" width="120" />
+</p>
+
 Plugin Jeedom de pilotage intelligent de piscine, combinant la sonde connectée **Flipr** et le contrôle **filtration / pompe à chaleur** via modules Zigbee (ou tout autre module Jeedom).
 
 ⚠️ **Note importante — Disponibilité de l'API Flipr**
@@ -57,11 +61,44 @@ Ce plugin repose entièrement sur l'API Flipr pour récupérer les données de l
 - Si non liées : états déduits des commandes envoyées par le plugin (fallback interne)
 
 ### Surplus solaire (optionnel)
-- Associez une commande info binaire "surplus électrique" : le plugin active filtration et PAC automatiquement lors des excédents de production photovoltaïque
+- Associez une commande info binaire « surplus électrique » : le plugin active filtration et PAC automatiquement lors des excédents de production photovoltaïque
 
 ### Plage nocturne
 - Plages horaires début/fin nuit configurables
 - Option pour autoriser ou interdire la PAC la nuit
+
+### Interface visuelle
+
+#### Tuile dashboard (desktop)
+
+La tuile s'affiche automatiquement dans **Accueil > Dashboard > Pièce** à la place des commandes individuelles.
+
+![Aperçu tuile dashboard desktop](tile_desktop.svg)
+
+Elle présente :
+- **Barre de statut** : état filtration (LED + chip), état PAC, plage horaire (jour &#9728;&#65039; / nuit &#127769;), niveau de batterie sonde
+- **Bandeau d'alerte** Flipr (si alerte active, fond jaune)
+- **4 cartes métriques** : Température eau, pH, Chlore, Potentiel Redox — avec tendance sur 4 heures (↑ → ↓) et code couleur selon l'état (vert / orange / rouge)
+- **Barre de progression** de filtration journalière (minutes effectuées / recommandées)
+- **Boutons d'action** : Filtration et PAC ON / OFF + forcer durée (slider 5–480 min)
+- **Infos nocturnes** : plage horaire, autorisation PAC la nuit
+- **Infos secondaires** : Indice UV, Conductivité, Batterie, état automatisation
+- **Actualisation automatique** toutes les 30 secondes — clic sur une métrique → historique Jeedom
+
+#### Tuile mobile
+
+Version compacte et tactile affichée dans la vue mobile de Jeedom.
+
+![Aperçu tuile mobile](tile_mobile.svg)
+
+Elle présente :
+- Barre de statut compacte (chips réduits)
+- **Grille 2×2** des 4 métriques principales (valeur + tendance, sans sous-texte)
+- Barre de progression filtration condensée
+- **Boutons large format** : Filtration et PAC ON / OFF + forcer durée, optimisés pour le tactile
+- **Actualisation automatique** toutes les 30 secondes
+
+> La commande `Tuile dashboard` est créée automatiquement à la sauvegarde de l'équipement. Toutes les autres commandes sont masquées sur la tuile au profit de ce widget.
 
 ---
 
@@ -81,7 +118,7 @@ Ce plugin repose entièrement sur l'API Flipr pour récupérer les données de l
 |-------|-------------|
 | Login Flipr | Email du compte Flipr |
 | Mot de passe Flipr | Mot de passe du compte Flipr |
-| Numéro de série | Auto-détecté au premier enregistrement — bouton "Détecter" disponible |
+| Numéro de série | Auto-détecté au premier enregistrement — bouton « Détecter » disponible |
 
 Un bouton **Synchroniser maintenant** permet de déclencher manuellement la récupération des mesures sans attendre le cron horaire.
 
@@ -146,14 +183,14 @@ Associez les commandes de vos équipements physiques. La sélection affiche le n
 ### Informations
 
 | Nom | Description | Unité | Historisée |
-|-----|-------------|-------|-----------|
+|-----|-------------|-------|----------|
 | Température eau | Température mesurée par la sonde Flipr | °C | ✅ |
 | pH | Valeur de pH | — | ✅ |
-| pH message | Message d'état Flipr (ex : "Parfait") | texte | — |
+| pH message | Message d'état Flipr (ex : « Parfait ») | texte | — |
 | pH déviation | Écart par rapport à la valeur cible | — | — |
 | pH secteur | Secteur de déviation (`Medium`, `TooLow`, `TooHigh`…) | texte | — |
 | Chlore | Taux de chlore (désinfectant) | mg/L | ✅ |
-| Chlore message | Message d'état Flipr (ex : "Trop faible") | texte | — |
+| Chlore message | Message d'état Flipr (ex : « Trop faible ») | texte | — |
 | Chlore déviation | Écart par rapport à la valeur cible | — | — |
 | Chlore secteur | Secteur de déviation | texte | — |
 | Potentiel Redox | ORP mesuré par la sonde | mV | ✅ |
@@ -166,6 +203,7 @@ Associez les commandes de vos équipements physiques. La sélection affiche le n
 | Filtration état | État actuel de la filtration | 0/1 | ✅ |
 | PAC état | État actuel de la pompe à chaleur | 0/1 | ✅ |
 | Alerte | Alerte active remontée par Flipr | texte | — |
+| Tuile dashboard | Widget d'affichage pour la vue Dashboard et Mobile | texte | — |
 
 ### Actions
 
@@ -179,14 +217,14 @@ Associez les commandes de vos équipements physiques. La sélection affiche le n
 | PAC OFF | Arrête la PAC (bypass durée mini) |
 | Forcer PAC | Démarre la PAC pour X minutes — slider 5–480 min |
 
-> La visibilité et l'historisation de chaque commande sont configurables directement depuis l'onglet **Commandes**.
+> La commande `Tuile dashboard` est gérée automatiquement par le plugin et n'est pas destinée à être utilisée dans des scénarios. La visibilité et l'historisation des autres commandes sont configurables depuis l'onglet **Commandes**.
 
 ---
 
 ## Appels API Flipr
 
 | Endpoint | Fréquence | Données |
-|----------|-----------|--------|
+|----------|-----------|----------|
 | `POST /oauth2/token` | 1×/heure max (token en cache 55 min) | Token d'authentification |
 | `GET /modules/{serial}/Survey/Last` | 1×/heure | Température, pH, Chlore, ORP, UV, Conductivité |
 | `GET /modules/{serial}/FiltrationTime/last` | 1×/heure (mode API) | Durée de filtration conseillée |
@@ -222,7 +260,7 @@ Le cron tourne **toutes les 5 minutes** et applique les règles suivantes dans l
 Le plugin écrit dans le fichier `/var/www/html/log/fliprpilot` (visible dans Jeedom → Analyse → Logs).
 
 | Niveau | Contenu |
-|--------|---------|
+|--------|--------|
 | `INFO` | Démarrages/arrêts filtration et PAC, sync Flipr réussie, détection de démarrages manuels |
 | `WARNING` | Erreurs API non bloquantes (rate limiting, endpoint indisponible), commande introuvable |
 | `ERROR` | Erreurs bloquantes (authentification échouée, JSON invalide) |
