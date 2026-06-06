@@ -13,5 +13,5 @@ pluginId: fliprpilot
 - Masquage automatique des commandes individuelles sur la tuile au profit du widget personnalisé
 - Commande `Tuile dashboard` créée automatiquement à la sauvegarde de l'équipement
 
-## v1.0.0
+## v1.0.0 — 2026-06-04
 - Version initiale
