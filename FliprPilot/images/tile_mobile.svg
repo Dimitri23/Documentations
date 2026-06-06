@@ -24,8 +24,7 @@
   <rect x="286" y="14" width="80" height="24" rx="12" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.25)" stroke-width="1"/>
   <text x="298" y="30" font-size="10" fill="#4ade80" font-weight="600">&#128267; 72%</text>
 
-  <!-- ── METRICS 2&#215;2 ── -->
-  <!-- Temp&#233;rature -->
+  <!-- ── METRICS 2×2 ── -->
   <rect x="14" y="50" width="170" height="82" rx="10" fill="#122236" stroke="#1e3a5f" stroke-width="1"/>
   <rect x="14" y="50" width="170" height="3" rx="1.5" fill="url(#gm-neutral)"/>
   <text x="24" y="67" font-size="9" fill="#5a8aaa" font-weight="600" letter-spacing="0.6">&#127777;&#65039; TEMP. EAU</text>
@@ -33,14 +32,12 @@
   <text x="100" y="100" font-size="14" fill="#94a3b8">&#176;C</text>
   <text x="120" y="98" font-size="14" fill="#5a8aaa">&#8594;</text>
 
-  <!-- pH -->
   <rect x="196" y="50" width="170" height="82" rx="10" fill="#122236" stroke="#1e3a5f" stroke-width="1"/>
   <rect x="196" y="50" width="170" height="3" rx="1.5" fill="url(#gm-ok)"/>
   <text x="206" y="67" font-size="9" fill="#5a8aaa" font-weight="600" letter-spacing="0.6">&#9879;&#65039; PH</text>
   <text x="206" y="100" font-size="32" fill="#4ade80" font-weight="700">7.21</text>
   <text x="272" y="98" font-size="14" fill="#5a8aaa">&#8594;</text>
 
-  <!-- Chlore -->
   <rect x="14" y="140" width="170" height="82" rx="10" fill="#122236" stroke="#1e3a5f" stroke-width="1"/>
   <rect x="14" y="140" width="170" height="3" rx="1.5" fill="url(#gm-warn)"/>
   <text x="24" y="157" font-size="9" fill="#5a8aaa" font-weight="600" letter-spacing="0.6">&#129514; CHLORE</text>
@@ -48,7 +45,6 @@
   <text x="93" y="190" font-size="12" fill="#94a3b8">mg/L</text>
   <text x="140" y="188" font-size="14" fill="#38bdf8">&#8595;</text>
 
-  <!-- Redox -->
   <rect x="196" y="140" width="170" height="82" rx="10" fill="#122236" stroke="#1e3a5f" stroke-width="1"/>
   <rect x="196" y="140" width="170" height="3" rx="1.5" fill="url(#gm-neutral)"/>
   <text x="206" y="157" font-size="9" fill="#5a8aaa" font-weight="600" letter-spacing="0.6">&#9889; REDOX</text>
@@ -65,7 +61,6 @@
   <rect x="24" y="260" width="161" height="8" rx="4" fill="url(#gm-bar)"/>
 
   <!-- ── ACTION GROUPS ── -->
-  <!-- Filtration -->
   <rect x="14" y="308" width="170" height="240" rx="10" fill="#122236" stroke="#1e3a5f" stroke-width="1"/>
   <text x="24" y="327" font-size="9" fill="#5a8aaa" font-weight="600" letter-spacing="0.6">&#128167; FILTRATION</text>
   <rect x="24" y="334" width="150" height="40" rx="8" fill="rgba(74,222,128,0.18)" stroke="rgba(74,222,128,0.3)" stroke-width="1"/>
@@ -75,7 +70,6 @@
   <rect x="24" y="430" width="150" height="40" rx="8" fill="rgba(126,207,255,0.12)" stroke="rgba(126,207,255,0.25)" stroke-width="1"/>
   <text x="99" y="455" font-size="12" fill="#7ecfff" font-weight="600" text-anchor="middle">&#9201; Forcer&#8230;</text>
 
-  <!-- PAC -->
   <rect x="196" y="308" width="170" height="240" rx="10" fill="#122236" stroke="#1e3a5f" stroke-width="1"/>
   <text x="206" y="327" font-size="9" fill="#5a8aaa" font-weight="600" letter-spacing="0.6">&#127777;&#65039; PAC</text>
   <rect x="206" y="334" width="150" height="40" rx="8" fill="rgba(251,146,60,0.18)" stroke="rgba(251,146,60,0.3)" stroke-width="1"/>

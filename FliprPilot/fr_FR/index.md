@@ -7,9 +7,7 @@ pluginId: fliprpilot
 
 # Plugin Flipr Pilot
 
-<p align="center">
-  <img src="fliprpilot_icon.png" alt="Icône FliprPilot" width="120" />
-</p>
+![Icône FliprPilot](../images/fliprpilot_icon.png)
 
 Plugin Jeedom de pilotage intelligent de piscine, combinant la sonde connectée **Flipr** et le contrôle **filtration / pompe à chaleur** via modules Zigbee (ou tout autre module Jeedom).
 
@@ -73,7 +71,7 @@ Ce plugin repose entièrement sur l'API Flipr pour récupérer les données de l
 
 La tuile s'affiche automatiquement dans **Accueil > Dashboard > Pièce** à la place des commandes individuelles.
 
-![Aperçu tuile dashboard desktop](tile_desktop.svg)
+![Aperçu tuile dashboard desktop](../images/tile_desktop.svg)
 
 Elle présente :
 - **Barre de statut** : état filtration (LED + chip), état PAC, plage horaire (jour &#9728;&#65039; / nuit &#127769;), niveau de batterie sonde
@@ -89,7 +87,7 @@ Elle présente :
 
 Version compacte et tactile affichée dans la vue mobile de Jeedom.
 
-![Aperçu tuile mobile](tile_mobile.svg)
+![Aperçu tuile mobile](../images/tile_mobile.svg)
 
 Elle présente :
 - Barre de statut compacte (chips réduits)
