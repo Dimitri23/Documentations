@@ -7,7 +7,7 @@ pluginId: fliprpilot
 
 # Plugin Flipr Pilot
 
-![Icône FliprPilot](fliprpilot_icon.svg)
+![Icône FliprPilot](https://raw.githubusercontent.com/Dimitri23/Documentations/main/FliprPilot/fr_FR/fliprpilot_icon.png)
 
 Plugin Jeedom de pilotage intelligent de piscine, combinant la sonde connectée **Flipr** et le contrôle **filtration / pompe à chaleur** via modules Zigbee (ou tout autre module Jeedom).
 
