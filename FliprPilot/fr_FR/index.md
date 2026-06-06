@@ -7,10 +7,14 @@ pluginId: fliprpilot
 
 # Plugin Flipr Pilot
 
+<p align="center">
+  <img src="fliprpilot_icon.png" alt="Icône FliprPilot" width="120" />
+</p>
+
 Plugin Jeedom de pilotage intelligent de piscine, combinant la sonde connectée **Flipr** et le contrôle **filtration / pompe à chaleur** via modules Zigbee (ou tout autre module Jeedom).
 
-⚠️ **Note importante — Disponibilité de l’API Flipr**
-Ce plugin repose entièrement sur l’API Flipr pour récupérer les données de la sonde. À l’heure de son développement, cette API fonctionne parfaitement. Cependant, la société Flipr ayant été placée en liquidation judiciaire fin 2025, l’auteur ne peut être et n’est en aucun cas responsable si l’API venait à devenir inaccessible ou à cesser de fonctionner.
+⚠️ **Note importante — Disponibilité de l'API Flipr**
+Ce plugin repose entièrement sur l'API Flipr pour récupérer les données de la sonde. À l'heure de son développement, cette API fonctionne parfaitement. Cependant, la société Flipr ayant été placée en liquidation judiciaire fin 2025, l'auteur ne peut être et n'est en aucun cas responsable si l'API venait à devenir inaccessible ou à cesser de fonctionner.
 
 ---
 
@@ -18,46 +22,46 @@ Ce plugin repose entièrement sur l’API Flipr pour récupérer les données de
 
 ### Sonde Flipr
 - Récupération automatique **toutes les heures** :
-  - Température de l’eau
-  - pH : valeur, message d’état, déviation, secteur (`Medium`, `TooLow`, `TooHigh`…)
-  - Chlore (désinfectant) : valeur, message, déviation, secteur
+  - Température de l'eau
+  - pH : valeur, message d'état, déviation, secteur (`Medium`, `TooLow`, `TooHigh`…)
+  - Chlore (désinfectant) : valeur, message, déviation, secteur
   - Potentiel Redox (ORP) en mV
   - Indice UV
   - Conductivité
-- Batterie via l’endpoint dédié `/AnalysR/settings` : **pourcentage** et **tension** en volts
+- Batterie via l'endpoint dédié `/AnalysR/settings` : **pourcentage** et **tension** en volts
 - Durée de filtration journalière via `/FiltrationTime/last`, avec fallback sur la règle **T°/2**
 - Alerte active Flipr via `/currentAlert` — mise à jour toutes les **30 minutes** — vide si aucune alerte
 - Date et heure de **dernière collecte** exposée comme commande info
-- Token OAuth2 mis en **cache 55 minutes** — un seul appel d’authentification par heure
+- Token OAuth2 mis en **cache 55 minutes** — un seul appel d'authentification par heure
 - Délai de **2 secondes** entre chaque appel API pour éviter le rate limiting Cloudflare
 
 ### Filtration
 - Commandes **ON / OFF** et **Forcer X minutes**
-- Trois sources de durée cible, configurables dans l’interface :
+- Trois sources de durée cible, configurables dans l'interface :
   - **API Flipr** *(défaut)* — valeur conseillée par la sonde, fallback T°/2 si indisponible
   - **Règle T°/2** — température ÷ 2 = heures de filtration
   - **Manuelle** — durée journalière en minutes saisie directement
 - Suivi quotidien du temps de filtration effectué (table SQL dédiée)
 - Arrêt automatique une fois la durée recommandée atteinte
 - **Durée minimale de fonctionnement** configurable — protège la pompe contre les cycles trop courts
-- Sécurité : la filtration ne peut pas s’arrêter automatiquement si la PAC est active
-- **Détection des démarrages manuels** : si une commande état est liée, le passage physique 0→1 démarre automatiquement le comptage
+- Sécurité : la filtration ne peut pas s'arrêter automatiquement si la PAC est active
+- **Détection des démarrages manuels** : si une commande état est liée, le passage physique 0→1 démarre automatiquement le comptage
 
 ### Pompe à chaleur (PAC)
 - Commandes **ON / OFF** et **Forcer X minutes**
 - Régulation automatique par **température cible** (jour / nuit) avec hystérésis configurable
-- Interlock : la PAC démarre automatiquement la filtration si elle est éteinte
+- Interlock : la PAC démarre automatiquement la filtration si elle est éteinte
 - **Durée minimale de fonctionnement** configurable — protège le compresseur
 - Arrêt automatique en plage nocturne (optionnel)
-- **Détection des démarrages manuels** : même comportement que la filtration
+- **Détection des démarrages manuels** : même comportement que la filtration
 
 ### États physiques (Zigbee)
 - Liaison optionnelle vers les commandes **état** des modules physiques (filtration et PAC)
-- Si liées : états lus depuis le module Zigbee toutes les 5 minutes, démarrages/arrêts manuels détectés automatiquement
-- Si non liées : états déduits des commandes envoyées par le plugin (fallback interne)
+- Si liées : états lus depuis le module Zigbee toutes les 5 minutes, démarrages/arrêts manuels détectés automatiquement
+- Si non liées : états déduits des commandes envoyées par le plugin (fallback interne)
 
 ### Surplus solaire (optionnel)
-- Associez une commande info binaire « surplus électrique » : le plugin active filtration et PAC automatiquement lors des excédents de production photovoltaïque
+- Associez une commande info binaire « surplus électrique » : le plugin active filtration et PAC automatiquement lors des excédents de production photovoltaïque
 
 ### Plage nocturne
 - Plages horaires début/fin nuit configurables
@@ -67,19 +71,19 @@ Ce plugin repose entièrement sur l’API Flipr pour récupérer les données de
 
 #### Tuile dashboard (desktop)
 
-La tuile s’affiche automatiquement dans **Accueil > Dashboard > Pièce** à la place des commandes individuelles.
+La tuile s'affiche automatiquement dans **Accueil > Dashboard > Pièce** à la place des commandes individuelles.
 
 ![Aperçu tuile dashboard desktop](tile_desktop.svg)
 
-Elle présente :
-- **Barre de statut** : état filtration (LED + chip), état PAC, plage horaire (jour &#9728;&#65039; / nuit &#127769;), niveau de batterie sonde
-- **Bandeau d’alerte** Flipr (si alerte active, fond jaune)
-- **4 cartes métriques** : Température eau, pH, Chlore, Potentiel Redox — avec tendance sur 4 heures (↑ → ↓) et code couleur selon l’état (vert / orange / rouge)
+Elle présente :
+- **Barre de statut** : état filtration (LED + chip), état PAC, plage horaire (jour &#9728;&#65039; / nuit &#127769;), niveau de batterie sonde
+- **Bandeau d'alerte** Flipr (si alerte active, fond jaune)
+- **4 cartes métriques** : Température eau, pH, Chlore, Potentiel Redox — avec tendance sur 4 heures (↑ → ↓) et code couleur selon l'état (vert / orange / rouge)
 - **Barre de progression** de filtration journalière (minutes effectuées / recommandées)
-- **Boutons d’action** : Filtration et PAC ON / OFF + forcer durée (slider 5–480 min)
-- **Infos nocturnes** : plage horaire, autorisation PAC la nuit
-- **Infos secondaires** : Indice UV, Conductivité, Batterie, état automatisation
-- **Actualisation automatique** toutes les 30 secondes — clic sur une métrique → historique Jeedom
+- **Boutons d'action** : Filtration et PAC ON / OFF + forcer durée (slider 5–480 min)
+- **Infos nocturnes** : plage horaire, autorisation PAC la nuit
+- **Infos secondaires** : Indice UV, Conductivité, Batterie, état automatisation
+- **Actualisation automatique** toutes les 30 secondes — clic sur une métrique → historique Jeedom
 
 #### Tuile mobile
 
@@ -87,21 +91,21 @@ Version compacte et tactile affichée dans la vue mobile de Jeedom.
 
 ![Aperçu tuile mobile](tile_mobile.svg)
 
-Elle présente :
+Elle présente :
 - Barre de statut compacte (chips réduits)
 - **Grille 2×2** des 4 métriques principales (valeur + tendance, sans sous-texte)
 - Barre de progression filtration condensée
-- **Boutons large format** : Filtration et PAC ON / OFF + forcer durée, optimisés pour le tactile
-- **Actualisation automatique** toutes les 30 secondes
+- **Boutons large format** : Filtration et PAC ON / OFF + forcer durée, optimisés pour le tactile
+- **Actualisation automatique** toutes les 30 secondes
 
-> La commande `Tuile dashboard` est créée automatiquement à la sauvegarde de l’équipement. Toutes les autres commandes sont masquées sur la tuile au profit de ce widget.
+> La commande `Tuile dashboard` est créée automatiquement à la sauvegarde de l'équipement. Toutes les autres commandes sont masquées sur la tuile au profit de ce widget.
 
 ---
 
 ## Prérequis
 
 - **Jeedom** v4.5 ou supérieur
-- Compte **Flipr** (identifiants de l’application mobile Flipr)
+- Compte **Flipr** (identifiants de l'application mobile Flipr)
 - Un module Jeedom (Zigbee ou autre) exposant des commandes **ON/OFF** pour la filtration et la pompe à chaleur
 
 ---
@@ -114,7 +118,7 @@ Elle présente :
 |-------|-------------|
 | Login Flipr | Email du compte Flipr |
 | Mot de passe Flipr | Mot de passe du compte Flipr |
-| Numéro de série | Auto-détecté au premier enregistrement — bouton « Détecter » disponible |
+| Numéro de série | Auto-détecté au premier enregistrement — bouton « Détecter » disponible |
 
 Un bouton **Synchroniser maintenant** permet de déclencher manuellement la récupération des mesures sans attendre le cron horaire.
 
@@ -146,9 +150,9 @@ Un bouton **Synchroniser maintenant** permet de déclencher manuellement la réc
 
 | Champ | Description | Défaut |
 |-------|-------------|--------|
-| Température cible jour (°C) | Température visée en journée pour le déclenchement PAC | 27 °C |
-| Température cible nuit (°C) | Température visée la nuit pour le déclenchement PAC | 24 °C |
-| Hystérésis PAC (°C) | Écart toléré avant déclenchement/arrêt de la PAC | 0.5 °C |
+| Température cible jour (°C) | Température visée en journée pour le déclenchement PAC | 27 °C |
+| Température cible nuit (°C) | Température visée la nuit pour le déclenchement PAC | 24 °C |
+| Hystérésis PAC (°C) | Écart toléré avant déclenchement/arrêt de la PAC | 0.5 °C |
 
 #### Plage nocturne
 
@@ -182,16 +186,16 @@ Associez les commandes de vos équipements physiques. La sélection affiche le n
 |-----|-------------|-------|----------|
 | Température eau | Température mesurée par la sonde Flipr | °C | ✅ |
 | pH | Valeur de pH | — | ✅ |
-| pH message | Message d’état Flipr (ex : « Parfait ») | texte | — |
+| pH message | Message d'état Flipr (ex : « Parfait ») | texte | — |
 | pH déviation | Écart par rapport à la valeur cible | — | — |
 | pH secteur | Secteur de déviation (`Medium`, `TooLow`, `TooHigh`…) | texte | — |
 | Chlore | Taux de chlore (désinfectant) | mg/L | ✅ |
-| Chlore message | Message d’état Flipr (ex : « Trop faible ») | texte | — |
+| Chlore message | Message d'état Flipr (ex : « Trop faible ») | texte | — |
 | Chlore déviation | Écart par rapport à la valeur cible | — | — |
 | Chlore secteur | Secteur de déviation | texte | — |
 | Potentiel Redox | ORP mesuré par la sonde | mV | ✅ |
 | Indice UV | Indice UV au moment de la mesure | — | — |
-| Conductivité | Conductivité de l’eau | µS | — |
+| Conductivité | Conductivité de l'eau | µS | — |
 | Batterie sonde | Niveau de batterie de la sonde | % | — |
 | Tension batterie | Tension de la batterie | V | — |
 | Filtration recommandée | Durée de filtration cible du jour | min | — |
@@ -199,7 +203,7 @@ Associez les commandes de vos équipements physiques. La sélection affiche le n
 | Filtration état | État actuel de la filtration | 0/1 | ✅ |
 | PAC état | État actuel de la pompe à chaleur | 0/1 | ✅ |
 | Alerte | Alerte active remontée par Flipr | texte | — |
-| Tuile dashboard | Widget d’affichage pour la vue Dashboard et Mobile | texte | — |
+| Tuile dashboard | Widget d'affichage pour la vue Dashboard et Mobile | texte | — |
 
 ### Actions
 
@@ -207,39 +211,39 @@ Associez les commandes de vos équipements physiques. La sélection affiche le n
 |-----|-------------|
 | Filtration ON | Démarre la filtration |
 | Filtration OFF | Arrête la filtration (bypass durée mini) |
-| Forcer filtration | Démarre la filtration pour X minutes — slider 5–480 min |
-| Forcer durée filtration | Modifie la durée journalière en mode **Manuelle** — slider 0–480 min (sans effet si la source est API Flipr ou T°/2) |
+| Forcer filtration | Démarre la filtration pour X minutes — slider 5–480 min |
+| Forcer durée filtration | Modifie la durée journalière en mode **Manuelle** — slider 0–480 min (sans effet si la source est API Flipr ou T°/2) |
 | PAC ON | Démarre la pompe à chaleur |
 | PAC OFF | Arrête la PAC (bypass durée mini) |
-| Forcer PAC | Démarre la PAC pour X minutes — slider 5–480 min |
+| Forcer PAC | Démarre la PAC pour X minutes — slider 5–480 min |
 
-> La commande `Tuile dashboard` est gérée automatiquement par le plugin et n’est pas destinée à être utilisée dans des scénarios. La visibilité et l’historisation des autres commandes sont configurables depuis l’onglet **Commandes**.
+> La commande `Tuile dashboard` est gérée automatiquement par le plugin et n'est pas destinée à être utilisée dans des scénarios. La visibilité et l'historisation des autres commandes sont configurables depuis l'onglet **Commandes**.
 
 ---
 
 ## Appels API Flipr
 
 | Endpoint | Fréquence | Données |
-|----------|-----------|---------|
-| `POST /oauth2/token` | 1×/heure max (token en cache 55 min) | Token d’authentification |
+|----------|-----------|----------|
+| `POST /oauth2/token` | 1×/heure max (token en cache 55 min) | Token d'authentification |
 | `GET /modules/{serial}/Survey/Last` | 1×/heure | Température, pH, Chlore, ORP, UV, Conductivité |
 | `GET /modules/{serial}/FiltrationTime/last` | 1×/heure (mode API) | Durée de filtration conseillée |
-| `GET /Modules/{serial}/AnalysR/settings` | 1×/heure | Batterie %, tension V, PlaceId |
-| `GET /modules/{placeId}/currentAlert` | 1×/30 min | Alerte active Flipr |
+| `GET /Modules/{serial}/AnalysR/settings` | 1×/heure | Batterie %, tension V, PlaceId |
+| `GET /modules/{placeId}/currentAlert` | 1×/30 min | Alerte active Flipr |
 
 Un délai de **2 secondes** est appliqué entre chaque appel pour respecter le rate limiting Cloudflare.
 
 ---
 
-## Logique d’automatisation
+## Logique d'automatisation
 
-Le cron tourne **toutes les 5 minutes** et applique les règles suivantes dans l’ordre :
+Le cron tourne **toutes les 5 minutes** et applique les règles suivantes dans l'ordre :
 
 ```
 1. Sync états     — lecture des états physiques depuis les modules Zigbee liés
                   — détection des démarrages/arrêts manuels → comptage automatique
 2. Log quotidien  — incrémente le compteur de filtration/PAC du jour (table SQL)
-3. Expirations    — fin d’un timer forcé → arrêt (bypass durée mini)
+3. Expirations    — fin d'un timer forcé → arrêt (bypass durée mini)
 4. Sécurité       — PAC active sans filtration → démarre la filtration
 5. PAC            — temp. eau < (cible − hystérésis) → démarre la PAC
                   — temp. eau > (cible + hystérésis) → arrête la PAC (si durée mini atteinte)
@@ -260,9 +264,9 @@ Le plugin écrit dans le fichier `/var/www/html/log/fliprpilot` (visible dans Je
 | `INFO` | Démarrages/arrêts filtration et PAC, sync Flipr réussie, détection de démarrages manuels |
 | `WARNING` | Erreurs API non bloquantes (rate limiting, endpoint indisponible), commande introuvable |
 | `ERROR` | Erreurs bloquantes (authentification échouée, JSON invalide) |
-| `DEBUG` | Trace complète des appels API (méthode, chemin, code HTTP, durée ms), décisions d’automatisation avec valeurs numériques, comptage quotidien filtration/PAC |
+| `DEBUG` | Trace complète des appels API (méthode, chemin, code HTTP, durée ms), décisions d'automatisation avec valeurs numériques, comptage quotidien filtration/PAC |
 
-Exemple de sortie DEBUG :
+Exemple de sortie DEBUG :
 
 ```
 → API GET /modules/F3B39C1C/Survey/Last
@@ -279,14 +283,14 @@ Comptage — filtration: 45min/180min (25%) | PAC: ON | filtration état: ON
 ## Roadmap
 
 ### Mode de la sonde Flipr
-- Récupérer le mode actif de la sonde via l’API : **actif**, **hivernage actif**, **hivernage passif**
+- Récupérer le mode actif de la sonde via l'API : **actif**, **hivernage actif**, **hivernage passif**
 - Exposer ce mode comme commande info
-- Adapter le comportement de l’automatisation selon le mode détecté
+- Adapter le comportement de l'automatisation selon le mode détecté
 
 ### Hivernage actif
-- Logique dédiée activée automatiquement quand la sonde est en mode hivernage actif :
+- Logique dédiée activée automatiquement quand la sonde est en mode hivernage actif :
   - Durée de filtration journalière minimale configurable (indépendante de la règle T°/2)
-  - Déclenchement forcé de la filtration en dessous d’une température seuil configurable (protection gel)
+  - Déclenchement forcé de la filtration en dessous d'une température seuil configurable (protection gel)
 - Ces règles doivent être prioritaires sur la logique normale de filtration
 
 ---
@@ -299,4 +303,4 @@ Smart, Luna, Atlas, Raspberry Pi, Docker, DIY, Mobile
 
 ## Licence
 
-AGPL v3 — Auteur : Dimitri23
+AGPL v3 — Auteur : Dimitri23
