@@ -7,6 +7,9 @@ pluginId: fliprpilot
 
 # Changelog
 
+## v1.1.1 — 2026-06-08
+- Correction de l'affichage de la **tuile mobile** : la barre de statut s'affiche désormais en **2 colonnes** sur tous les appareils mobiles (Filtration/PAC à gauche, Batterie/Plage à droite)
+
 ## v1.1.0 — 2026-06-06
 - Ajout d'une **tuile dashboard** personnalisée (desktop) : affichage complet des mesures, état filtration/PAC, barre de progression journalière et boutons d'action directement depuis **Accueil > Dashboard**
 - Ajout d'une **tuile mobile** optimisée : version compacte et tactile, grille 2×2 des métriques, boutons large format adaptés aux smartphones
