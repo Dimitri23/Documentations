@@ -7,6 +7,9 @@ pluginId: fliprpilot
 
 # Changelog
 
+## v1.1.2 — 2026-06-08
+- Suppression de la possibilité de cliquer sur les métriques info (desktop et mobile) : les métriques ne sont plus interactives, seuls les boutons d'action restent cliquables
+
 ## v1.1.1 — 2026-06-08
 - Correction de l'affichage de la **tuile mobile** : la barre de statut s'affiche désormais en **2 colonnes** sur tous les appareils mobiles (Filtration/PAC à gauche, Batterie/Plage à droite)
 
