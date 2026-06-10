@@ -7,6 +7,13 @@ pluginId: fliprpilot
 
 # Changelog
 
+## v1.1.3 — 2026-06-10
+- Amélioration de la résilience de l'API Flipr :
+  - Backoff exponentiel sur les erreurs HTTP 429 (3 tentatives : 0s, 10s, 20s)
+  - Suppression du double appel token à chaque heure (cause principale des 429 répétitifs)
+  - Cache de la dernière valeur connue de `FiltrationTime` : plus de cible de filtration oscillante en cas d'indisponibilité API
+- Réduction du bruit dans les logs : suppression des lignes rédundantes « PAC → aucune action » et « Filtration → maintien »
+
 ## v1.1.2 — 2026-06-08
 - Suppression de la possibilité de cliquer sur les métriques info (desktop et mobile) : les métriques ne sont plus interactives, seuls les boutons d'action restent cliquables
 
