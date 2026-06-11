@@ -7,6 +7,12 @@ pluginId: fliprpilot
 
 # Changelog
 
+## v1.1.4 — 2026-06-11
+- Élimination des erreurs HTTP 429 sur `syncAlert` (toutes les 30 min) :
+  - `syncFlipr` renouvelle systématiquement le token à chaque cycle horaire et étend sa durée de vie à 65 min
+  - `syncAlert` réutilise désormais le token en cache (âgé de ~30 min) sans jamais rappeler `/oauth2/token` → 1 appel token/heure au lieu de 2
+- Suppression du log « PAC → aucune action » en plage nocturne (était émis toutes les 5 min, soit ~108 lignes par nuit)
+
 ## v1.1.3 — 2026-06-10
 - Amélioration de la résilience de l'API Flipr :
   - Backoff exponentiel sur les erreurs HTTP 429 (3 tentatives : 0s, 10s, 20s)
