@@ -7,6 +7,10 @@ pluginId: fliprpilot
 
 # Changelog
 
+## v1.1.5 — 2026-06-22
+- Cache batterie/tension : quand `AnalysR/settings` est indisponible (timeout), la dernière valeur connue est restituée au lieu d'afficher 0%/0V
+- Résilience token syncFlipr : si le refresh forcé du token échoue (timeout ou 429 épuisé), le token existant est réutilisé s'il est encore valide — empêche la cascade « syncFlipr timeout → syncAlert 429 » 30 min plus tard
+
 ## v1.1.4 — 2026-06-11
 - Élimination des erreurs HTTP 429 sur `syncAlert` (toutes les 30 min) :
   - `syncFlipr` renouvelle systématiquement le token à chaque cycle horaire et étend sa durée de vie à 65 min
