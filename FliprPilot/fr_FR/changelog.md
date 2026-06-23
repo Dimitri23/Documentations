@@ -7,6 +7,9 @@ pluginId: fliprpilot
 
 # Changelog
 
+## v1.2.3 — 2026-06-23
+- Rafraîchissement immédiat de la tuile (dashboard et mobile) après un clic sur un bouton d'action — plus besoin d'attendre les 30 secondes du polling pour voir le changement d'état
+
 ## v1.2.2 — 2026-06-23
 - Ajout des **boutons de mode PAC** (❄️ Froid / 🔥 Chauffe) directement sur la tuile dashboard et la tuile mobile — il est désormais possible de basculer le mode PAC sans passer par la page équipement
 
