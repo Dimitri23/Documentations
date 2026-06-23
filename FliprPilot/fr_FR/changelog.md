@@ -7,6 +7,9 @@ pluginId: fliprpilot
 
 # Changelog
 
+## v1.2.2 — 2026-06-23
+- Ajout des **boutons de mode PAC** (❄️ Froid / 🔥 Chauffe) directement sur la tuile dashboard et la tuile mobile — il est désormais possible de basculer le mode PAC sans passer par la page équipement
+
 ## v1.2.1 — 2026-06-23
 - Ajout des champs de configuration **« Cible refroidissement jour »** et **« Cible refroidissement nuit »** dans l'onglet Automatisation (étaient absents de l'interface malgré leur présence dans le code)
 
