@@ -7,6 +7,9 @@ pluginId: fliprpilot
 
 # Changelog
 
+## v1.2.1 — 2026-06-23
+- Ajout des champs de configuration **« Cible refroidissement jour »** et **« Cible refroidissement nuit »** dans l'onglet Automatisation (étaient absents de l'interface malgré leur présence dans le code)
+
 ## v1.2.0 — 2026-06-22
 - Ajout du **mode refroidissement PAC** pour les journées de forte chaleur :
   - Nouvelle commande action **« PAC mode froid »** : bascule la logique de régulation en mode refroidissement (à utiliser après avoir changé manuellement le mode sur la PAC physique)
