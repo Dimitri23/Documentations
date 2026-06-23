@@ -7,6 +7,9 @@ pluginId: fliprpilot
 
 # Changelog
 
+## v1.2.4 — 2026-06-23
+- Correction du bouton **« Forcer »** (Filtration et PAC) sur la tuile mobile : le sélecteur de durée s'affiche désormais correctement sur mobile (remplacement du modal Bootstrap par `bootbox`, natif Jeedom)
+
 ## v1.2.3 — 2026-06-23
 - Rafraîchissement immédiat de la tuile (dashboard et mobile) après un clic sur un bouton d'action — plus besoin d'attendre les 30 secondes du polling pour voir le changement d'état
 
