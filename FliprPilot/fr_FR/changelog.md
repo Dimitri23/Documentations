@@ -7,6 +7,14 @@ pluginId: fliprpilot
 
 # Changelog
 
+## v1.2.0 — 2026-06-22
+- Ajout du **mode refroidissement PAC** pour les journées de forte chaleur :
+  - Nouvelle commande action **« PAC mode froid »** : bascule la logique de régulation en mode refroidissement (à utiliser après avoir changé manuellement le mode sur la PAC physique)
+  - Nouvelle commande action **« PAC mode chauffe »** : retour au mode chauffage
+  - Nouvelle commande info **« Mode PAC »** : affiche le mode actif (`chauffe` ou `froid`)
+  - Logique hysterèse inversée en mode froid — PAC ON quand T°eau > cible + hysterèse, OFF quand T°eau ≤ cible − hysterèse
+  - Cibles de température dédiées au refroidissement : `temp_cible_froid_jour` et `temp_cible_froid_nuit` (défaut 28°C), indépendantes des cibles de chauffage
+
 ## v1.1.5 — 2026-06-22
 - Cache batterie/tension : quand `AnalysR/settings` est indisponible (timeout), la dernière valeur connue est restituée au lieu d'afficher 0%/0V
 - Résilience token syncFlipr : si le refresh forcé du token échoue (timeout ou 429 épuisé), le token existant est réutilisé s'il est encore valide — empêche la cascade « syncFlipr timeout → syncAlert 429 » 30 min plus tard
