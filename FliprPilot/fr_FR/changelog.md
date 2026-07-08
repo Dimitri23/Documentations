@@ -7,6 +7,12 @@ pluginId: fliprpilot
 
 # Changelog
 
+## v1.2.5 — 2026-07-08
+- Suppression du double log **« Filtration ON »** à chaque démarrage automatique (la vérification utilise désormais l'état virtuel, immédiatement à jour)
+- Filtre anti-aberration sur le **pH** : les valeurs hors plage physique (< 5,0 ou > 9,5) sont ignorées avec un WARNING — la dernière valeur valide est conservée
+- Filtre de cohérence sur la **durée de filtration recommandée** : si la valeur renvoyée par l'API s'écarte de plus de 50 % du cache (ex. 360 → 660 min), elle est ignorée en attente de confirmation au cycle suivant
+- Protection **régulation sur données périmées** : le démarrage automatique de la PAC est bloqué si la dernière collecte Flipr réussie remonte à plus de 2 heures — l'arrêt reste toujours autorisé, la filtration continue normalement
+
 ## v1.2.4 — 2026-06-23
 - Correction du bouton **« Forcer »** (Filtration et PAC) sur la tuile mobile : le sélecteur de durée s'affiche désormais correctement sur mobile (remplacement du modal Bootstrap par `bootbox`, natif Jeedom)
 
