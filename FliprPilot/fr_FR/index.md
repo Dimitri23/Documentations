@@ -48,10 +48,18 @@ Ce plugin repose entièrement sur l'API Flipr pour récupérer les données de l
 ### Pompe à chaleur (PAC)
 - Commandes **ON / OFF** et **Forcer X minutes**
 - Régulation automatique par **température cible** (jour / nuit) avec hystérésis configurable
+- **Mode froid / Mode chauffe** : deux logiques d'hystérésis distinctes avec cibles dédiées — basculement via commande ou bouton sur la tuile
 - Interlock : la PAC démarre automatiquement la filtration si elle est éteinte
 - **Durée minimale de fonctionnement** configurable — protège le compresseur
 - Arrêt automatique en plage nocturne (optionnel)
 - **Détection des démarrages manuels** : même comportement que la filtration
+
+### Hivernage / Protection antigel
+- **Mode hivernage manuel** : activable depuis la tuile ou la page équipement — désactive la régulation normale (PAC, filtration quotidienne)
+- En mode hivernage, la filtration démarre automatiquement si la température extérieure descend sous un **seuil configurable** (défaut 4 °C) et s'arrête à seuil + 1 °C
+- Source de température : **sonde extérieure Jeedom** au choix, configurée dans l'onglet Liaisons
+- La PAC n'est jamais démarrée en mode hivernage
+- Commande info **« Antigel actif »** (binaire) et bandeau bleu ❄️ sur la tuile quand la protection est en cours
 
 ### États physiques (Zigbee)
 - Liaison optionnelle vers les commandes **état** des modules physiques (filtration et PAC)
@@ -74,13 +82,15 @@ La tuile s'affiche automatiquement dans **Accueil > Dashboard > Pièce** à la p
 ![Aperçu tuile dashboard desktop](../images/tile_desktop.svg)
 
 Elle présente :
-- **Barre de statut** : état filtration (LED + chip), état PAC, plage horaire (jour &#9728;&#65039; / nuit &#127769;), niveau de batterie sonde
-- **Bandeau d'alerte** Flipr (si alerte active, fond jaune)
+- **Barre de statut** : état filtration (LED + chip), état PAC, plage horaire (jour &#9728;&#65039; / nuit &#127769;), niveau de batterie sonde, chip **❄️ Hivernage** (visible uniquement quand actif)
+- **Bandeau d'alerte** Flipr (fond jaune si alerte active)
+- **Bandeau antigel** (fond bleu ❄️ quand la protection antigel est en cours)
 - **4 cartes métriques** : Température eau, pH, Chlore, Potentiel Redox — avec tendance sur 4 heures (↑ → ↓) et code couleur selon l'état (vert / orange / rouge)
 - **Barre de progression** de filtration journalière (minutes effectuées / recommandées)
-- **Boutons d'action** : Filtration et PAC ON / OFF + forcer durée (slider 5–480 min)
+- **Boutons d'action Filtration** : ON / OFF + forcer durée (slider 5–480 min)
+- **Boutons d'action PAC** : ON / OFF + forcer durée + boutons **❄️ Mode froid** / **🔥 Mode chauffe**
 - **Infos nocturnes** : plage horaire, autorisation PAC la nuit
-- **Infos secondaires** : Indice UV, Conductivité, Batterie, état automatisation
+- **Infos secondaires** : Indice UV, Conductivité, Batterie, état automatisation, état hivernage avec boutons **Activer / Désactiver**
 - **Actualisation automatique** toutes les 30 secondes — clic sur une métrique → historique Jeedom
 
 #### Tuile mobile
@@ -90,10 +100,11 @@ Version compacte et tactile affichée dans la vue mobile de Jeedom.
 ![Aperçu tuile mobile](../images/tile_mobile.svg)
 
 Elle présente :
-- Barre de statut compacte (chips réduits)
+- Barre de statut compacte (chips réduits) — chip **❄️ Hivernage** visible quand actif
+- **Bandeau antigel** (fond bleu ❄️ quand la protection est en cours)
 - **Grille 2×2** des 4 métriques principales (valeur + tendance, sans sous-texte)
 - Barre de progression filtration condensée
-- **Boutons large format** : Filtration et PAC ON / OFF + forcer durée, optimisés pour le tactile
+- **Boutons large format** : Filtration et PAC ON / OFF + forcer durée + modes PAC + **Activer / Désactiver hivernage**, optimisés pour le tactile
 - **Actualisation automatique** toutes les 30 secondes
 
 > La commande `Tuile dashboard` est créée automatiquement à la sauvegarde de l'équipement. Toutes les autres commandes sont masquées sur la tuile au profit de ce widget.
@@ -148,9 +159,20 @@ Un bouton **Synchroniser maintenant** permet de déclencher manuellement la réc
 
 | Champ | Description | Défaut |
 |-------|-------------|--------|
-| Température cible jour (°C) | Température visée en journée pour le déclenchement PAC | 27 °C |
-| Température cible nuit (°C) | Température visée la nuit pour le déclenchement PAC | 24 °C |
+| Température cible jour (°C) | Température visée en journée (mode chauffe) | 27 °C |
+| Température cible nuit (°C) | Température visée la nuit (mode chauffe) | 24 °C |
+| Cible refroidissement jour (°C) | Température visée en journée en mode froid | 28 °C |
+| Cible refroidissement nuit (°C) | Température visée la nuit en mode froid | 28 °C |
 | Hystérésis PAC (°C) | Écart toléré avant déclenchement/arrêt de la PAC | 0.5 °C |
+
+#### Hivernage / Protection antigel
+
+| Champ | Description | Défaut |
+|-------|-------------|--------|
+| Activer le mode hivernage | Désactive la régulation normale, active uniquement la protection antigel | Non |
+| Seuil antigel (°C) | La filtration démarre si la température extérieure descend sous ce seuil | 4 °C |
+
+> En mode hivernage, la PAC n'est jamais démarrée. La sonde de température extérieure est à configurer dans l'onglet **Liaisons**.
 
 #### Plage nocturne
 
@@ -166,6 +188,7 @@ Associez les commandes de vos équipements physiques. La sélection affiche le n
 
 | Liaison | Type | Description |
 |---------|------|-------------|
+| Sonde température extérieure | Info numérique | *(requis pour hivernage)* Commande température extérieure Jeedom |
 | Commande ON filtration | Action | Démarre la pompe de filtration |
 | Commande OFF filtration | Action | Arrête la pompe de filtration |
 | État filtration | Info 0/1 | *(optionnel)* État réel du module — permet la détection des actions manuelles |
@@ -200,6 +223,8 @@ Associez les commandes de vos équipements physiques. La sélection affiche le n
 | Dernière collecte | Date et heure de la dernière sync Flipr réussie | texte | — |
 | Filtration état | État actuel de la filtration | 0/1 | ✅ |
 | PAC état | État actuel de la pompe à chaleur | 0/1 | ✅ |
+| Mode PAC | Mode actif de la PAC (`chauffe` ou `froid`) | texte | — |
+| Antigel actif | Protection antigel en cours (mode hivernage) | 0/1 | — |
 | Alerte | Alerte active remontée par Flipr | texte | — |
 | Tuile dashboard | Widget d'affichage pour la vue Dashboard et Mobile | texte | — |
 
@@ -214,6 +239,10 @@ Associez les commandes de vos équipements physiques. La sélection affiche le n
 | PAC ON | Démarre la pompe à chaleur |
 | PAC OFF | Arrête la PAC (bypass durée mini) |
 | Forcer PAC | Démarre la PAC pour X minutes — slider 5–480 min |
+| PAC mode froid | Bascule la régulation en mode refroidissement |
+| PAC mode chauffe | Bascule la régulation en mode chauffage |
+| Hivernage ON | Active le mode hivernage |
+| Hivernage OFF | Désactive le mode hivernage |
 
 > La commande `Tuile dashboard` est gérée automatiquement par le plugin et n'est pas destinée à être utilisée dans des scénarios. La visibilité et l'historisation des autres commandes sont configurables depuis l'onglet **Commandes**.
 
@@ -238,14 +267,21 @@ Un délai de **2 secondes** est appliqué entre chaque appel pour respecter le r
 Le cron tourne **toutes les 5 minutes** et applique les règles suivantes dans l'ordre :
 
 ```
+0. Hivernage      — si mode hivernage actif : seule la protection antigel s'exécute
+                    (temp. ext ≤ seuil → filtration ON ; temp. ext > seuil+1°C → filtration OFF)
+                  — retour immédiat (étapes 1–7 ignorées)
+
 1. Sync états     — lecture des états physiques depuis les modules Zigbee liés
                   — détection des démarrages/arrêts manuels → comptage automatique
 2. Log quotidien  — incrémente le compteur de filtration/PAC du jour (table SQL)
 3. Expirations    — fin d'un timer forcé → arrêt (bypass durée mini)
 4. Sécurité       — PAC active sans filtration → démarre la filtration
-5. PAC            — temp. eau < (cible − hystérésis) → démarre la PAC
-                  — temp. eau > (cible + hystérésis) → arrête la PAC (si durée mini atteinte)
+5. PAC            — mode chauffe : temp. eau < (cible − hystérésis) → démarre la PAC
+                               temp. eau > (cible + hystérésis) → arrête la PAC
+                  — mode froid  : temp. eau > (cible + hystérésis) → démarre la PAC
+                               temp. eau < (cible − hystérésis) → arrête la PAC
                   — plage nuit + PAC non autorisée   → arrête la PAC (si durée mini atteinte)
+                  — données Flipr > 2h : démarrage PAC bloqué, arrêt toujours autorisé
 6. Filtration     — durée cible non atteinte + journée → maintient/démarre la filtration
                   — durée cible atteinte + PAC éteinte → arrête la filtration (si durée mini atteinte)
 7. Surplus        — surplus détecté → démarre filtration + PAC si eau < température cible
@@ -278,20 +314,6 @@ Comptage — filtration: 45min/180min (25%) | PAC: ON | filtration état: ON
 
 ---
 
-## Roadmap
-
-### Mode de la sonde Flipr
-- Récupérer le mode actif de la sonde via l'API : **actif**, **hivernage actif**, **hivernage passif**
-- Exposer ce mode comme commande info
-- Adapter le comportement de l'automatisation selon le mode détecté
-
-### Hivernage actif
-- Logique dédiée activée automatiquement quand la sonde est en mode hivernage actif :
-  - Durée de filtration journalière minimale configurable (indépendante de la règle T°/2)
-  - Déclenchement forcé de la filtration en dessous d'une température seuil configurable (protection gel)
-- Ces règles doivent être prioritaires sur la logique normale de filtration
-
----
 
 ## Compatibilité
 
