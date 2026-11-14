@@ -7,6 +7,15 @@ pluginId: fliprpilot
 
 # Changelog
 
+## v1.2.6 — 2026-11-14
+- Nouveau **mode hivernage / protection antigel** :
+  - Toggle « Mode hivernage » dans l'onglet Automatisation — désactive la régulation normale (PAC, filtration quotidienne) et active uniquement la protection antigel
+  - Seuil de déclenchement configurable (défaut **4°C**) : quand la température extérieure descend sous ce seuil, la filtration démarre automatiquement pour éviter le gel des tuyaux ; arrêt à seuil +1°C
+  - Source de température : sonde extérieure Jeedom au choix, à configurer dans l'onglet **Liaisons** (commande info numérique)
+  - Nouvelle commande info **« Antigel actif »** (binaire)
+  - Bandeau bleu ❄️ sur les tuiles dashboard et mobile quand la protection antigel est en cours
+  - La PAC n'est jamais démarrée en mode hivernage
+
 ## v1.2.5 — 2026-07-08
 - Suppression du double log **« Filtration ON »** à chaque démarrage automatique (la vérification utilise désormais l'état virtuel, immédiatement à jour)
 - Filtre anti-aberration sur le **pH** : les valeurs hors plage physique (< 5,0 ou > 9,5) sont ignorées avec un WARNING — la dernière valeur valide est conservée
