@@ -7,6 +7,13 @@ pluginId: fliprpilot
 
 # Changelog
 
+## v1.2.7 — 2026-11-14
+- **Interface tuile** : affichage et contrôle du mode hivernage directement depuis la tuile dashboard et mobile :
+  - Chip « ❄️ Hivernage » dans la barre de statut, visible uniquement quand le mode est actif
+  - Boutons **Activer / Désactiver** le mode hivernage (sans passer par la page équipement)
+  - Le bouton actif est mis en surbrillance selon l'état courant
+  - Le bandeau bleu antigel reste affiché quand la protection est en cours
+
 ## v1.2.6 — 2026-11-14
 - Nouveau **mode hivernage / protection antigel** :
   - Toggle « Mode hivernage » dans l'onglet Automatisation — désactive la régulation normale (PAC, filtration quotidienne) et active uniquement la protection antigel
